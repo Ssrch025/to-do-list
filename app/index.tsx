@@ -1,10 +1,8 @@
 import ListItem from '@/components/to-do/list-item'
 import { IListItem } from '@/model/to-do-model'
 import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-
-type Props = {}
 
 const initialLists: IListItem[] = [
     {
@@ -21,18 +19,29 @@ const initialLists: IListItem[] = [
     },
 ]
 
-const App = (props: Props) => {
+const App = () => {
+    const maxList = 30
     const [lists, setLists] = useState<IListItem[]>(initialLists)
 
     const onAdd = () => {
-        const newItem: IListItem = { id: lists.length + 1, text: '' }
-        setLists(prev => [newItem, ...prev])
+        const size = lists.length + 1
+        if (size <= maxList) {
+            const newItem: IListItem = { id: size, text: '' }
+            setLists(prev => [newItem, ...prev])
+        } else {
+            Alert.alert(`เพิ่มได้สูงสุด ${maxList} รายการ`)
+        }
     }
 
     const onHandleText = (item: IListItem, value: string) => {
         const findIndex = lists.findIndex((val) => val.id === item.id)
         lists[findIndex].text = value
         setLists([...lists])
+    }
+
+    const onRemove = (item: IListItem) => {
+        const filterItem = lists.filter((val) => val.id !== item.id)
+        setLists([...filterItem])
     }
 
     return (
@@ -54,7 +63,7 @@ const App = (props: Props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={[styles.button, { backgroundColor: '#c0e7ccff' }]}
-                    onPress={onAdd}
+                    onPress={() => { }}
                 >
                     <Text style={[styles.buttonText, { color: '#1a7535ff' }]}>
                         Submit
@@ -66,10 +75,11 @@ const App = (props: Props) => {
                 <SafeAreaView>
                     <FlatList
                         data={lists}
-                        renderItem={listItem => (
+                        renderItem={({ item }) => (
                             <ListItem
-                                text={listItem.item.text}
-                                onHandleText={(value) => onHandleText(listItem.item, value)}
+                                text={item.text}
+                                onHandleText={(value) => onHandleText(item, value)}
+                                onRemove={() => onRemove(item)}
                             />
                         )}
                     />
