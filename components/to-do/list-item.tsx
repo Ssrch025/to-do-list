@@ -11,7 +11,6 @@ type Props = {
 const ListItem = (props: Props) => {
     return (
         <View style={styles.item}>
-            {/* <Text style={styles.title}>{props.text}</Text> */}
             <SafeAreaProvider>
                 <SafeAreaView>
                     <TextInput
