@@ -1,31 +1,43 @@
+import { IListItem } from '@/model/to-do-model';
 import React from 'react';
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import IconButton from './icon-button';
 
 type Props = {
     text: string
-    onHandleText: (value: string) => void
+    listItem: IListItem
     onRemove: () => void
+    onHandleDoneTask: () => void
 }
 
 const ListItem = (props: Props) => {
     return (
-        <View style={styles.item}>
-            <SafeAreaProvider>
-                <SafeAreaView>
-                    <TextInput
-                        style={{}}
-                        onChangeText={props.onHandleText}
-                        value={props.text}
-                    />
-                </SafeAreaView>
-            </SafeAreaProvider>
-            <TouchableOpacity
-                style={styles.button}
+        <View style={styles.container}>
+            {props.listItem.isDone
+                ? <IconButton
+                    name='checkmark-circle-outline'
+                    color='green'
+                    onPress={props.onHandleDoneTask}
+                />
+                : <TouchableOpacity
+                    style={styles.circleButton}
+                    onPress={props.onHandleDoneTask}
+                >
+                    <View style={styles.circle} />
+                </TouchableOpacity>
+            }
+
+            <Text style={[styles.textContainer, props.listItem.isDone && styles.textDone]}>
+                {props.text}
+            </Text>
+
+            <IconButton
+                name='trash'
+                shape='square'
+                color='red'
+                backgroundColor='#fbb9b8ff'
                 onPress={props.onRemove}
-            >
-                <Text style={styles.buttonText}>X</Text>
-            </TouchableOpacity>
+            />
         </View>
     );
 }
@@ -33,26 +45,34 @@ const ListItem = (props: Props) => {
 export default ListItem
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#fcfdeeff',
-        padding: 10,
+    container: {
+        flexDirection: 'row',
+        minHeight: 50,
+        gap: 10,
+        marginBottom: 10,
+    },
+    textContainer: {
+        flex: 8,
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 8,
-        marginVertical: 10,
-        marginHorizontal: 15,
-        // layout
-        flexDirection: 'row',
+        backgroundColor: '#fcfdeeff',
+        padding: 10
     },
-    title: {
-        fontSize: 32,
+    textDone: {
+        textDecorationLine: 'line-through',
     },
-    button: {
+    circleButton: {
+        flex: 1,
+        borderRadius: 15,
+        backgroundColor: '#b1b1b17c',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    circle: {
+        borderWidth: 1,
         borderRadius: '50%',
+        width: 15,
+        height: 15,
     },
-    buttonText: {
-        width: 20,
-        height: 20,
-        textAlign: 'center',
-    }
 })
