@@ -36,17 +36,11 @@ const ModalItem = (props: Props) => {
                         <Text style={styles.headerText}>
                             {props.listItem.header}
                         </Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={props.onToggle}
-                        >
-                            <Text style={styles.text}>X</Text>
-                        </Pressable>
                     </View>
                     <StyledTextInput
                         multiline
                         maxLength={500}
-                        placeholder='Please Type...'
+                        placeholder='Type here...'
                         value={props.listItem.body}
                         onChange={props.handleBody}
                     />
@@ -89,16 +83,6 @@ const styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: 'bold',
         maxWidth: '80%',
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-    },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
     },
     text: {
         color: 'white',

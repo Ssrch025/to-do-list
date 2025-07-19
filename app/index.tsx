@@ -6,7 +6,7 @@ import StyledTextInput from '@/components/to-do/StyledTextInput'
 import { IListItem } from '@/model/toDoModel'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, KeyboardAvoidingView, Platform, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { FlatList, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 const initialLists: IListItem[] = [
@@ -91,7 +91,8 @@ const App = () => {
         <SafeAreaProvider>
             <KeyboardAvoidingView
                 style={{ flex: 1 }}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                behavior='padding'
+                keyboardVerticalOffset={40}
             >
                 <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <SafeAreaView style={styles.container}>
@@ -117,6 +118,7 @@ const App = () => {
                                 <StyledTextInput
                                     multiline
                                     maxLength={100}
+                                    placeholder='Type here...'
                                     value={header}
                                     onChange={onHandleNote}
                                 />
