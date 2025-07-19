@@ -18,7 +18,7 @@ const initialLists: IListItem[] = [
 const App = () => {
     const [header, setHeader] = useState<string>('')
     const [lists, setLists] = useState<IListItem[]>(initialLists)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
     const onHandleNote = (value: string) => {
         setHeader(value)
@@ -76,10 +76,9 @@ const App = () => {
     }
 
     useEffect(() => {
-        setIsLoading(true)
         setTimeout(() => {
             getData('lists')
-        }, 5000)
+        }, 2000)
     }, [])
 
     useEffect(() => {
