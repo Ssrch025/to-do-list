@@ -1,13 +1,28 @@
 
+import React, { useEffect, useState } from 'react'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+    FlatList,
+    Keyboard,
+    KeyboardAvoidingView,
+    StyleSheet,
+    Text,
+    TouchableWithoutFeedback,
+    View,
+} from 'react-native'
+import {
+    SafeAreaProvider,
+    SafeAreaView,
+} from 'react-native-safe-area-context'
+
 import ActivityLoading from '@/components/to-do/ActivityLoading'
 import IconButton from '@/components/to-do/IconButton'
 import ListItem from '@/components/to-do/ListItem'
 import StyledTextInput from '@/components/to-do/StyledTextInput'
+
+import { Colors } from '@/constants/Colors'
 import { IListItem } from '@/model/toDoModel'
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import React, { useEffect, useState } from 'react'
-import { FlatList, Keyboard, KeyboardAvoidingView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 
 const initialLists: IListItem[] = [
     { id: Date.now() + 1, header: `Example 1 \n(Tap here to open note)`, body: 'Please type here...', isDone: false },
@@ -127,8 +142,10 @@ const App = () => {
                                     shape='square'
                                     disabled={!header}
                                     onPress={onSubmit}
-                                    color={header.length ? '#0045f4ff' : 'black'}
-                                    backgroundColor={header.length ? '#c3d0f1ff' : '#b1b1b17c'}
+                                    color={header.length ? Colors.custom.primary : Colors.custom.disable}
+                                    backgroundColor={header.length
+                                        ? Colors.custom.primaryContainer
+                                        : Colors.custom.disableContainer}
                                 />
                             </View>}
                     </SafeAreaView>
@@ -145,6 +162,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         gap: 10,
+        backgroundColor: 'white',
     },
     header: {
         fontSize: 32,

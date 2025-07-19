@@ -1,9 +1,19 @@
-import { IListItem } from '@/model/toDoModel';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React, { useState } from 'react';
-import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import IconButton from './IconButton';
 import ModalItem from './ModalItem';
+
+import { IListItem } from '@/model/toDoModel';
+
+import { Colors } from '@/constants/Colors';
 
 type Props = {
     listItem: IListItem
@@ -22,7 +32,7 @@ const ListItem = (props: Props) => {
             {props.listItem.isDone
                 ? <IconButton
                     name='checkmark-circle-outline'
-                    color='green'
+                    color={Colors.custom.secondary}
                     onPress={props.onDoneTask}
                 />
                 : <TouchableOpacity
@@ -34,7 +44,7 @@ const ListItem = (props: Props) => {
             }
 
             <Pressable
-                style={[styles.textContainer, props.listItem.isDone && { backgroundColor: '#c0e7ccff' }]}
+                style={[styles.textContainer, props.listItem.isDone && { backgroundColor: Colors.custom.secondaryContainer }]}
                 onPress={onToggle}
             >
                 <Text style={[props.listItem.isDone && styles.textDone, styles.text]}>
@@ -49,8 +59,8 @@ const ListItem = (props: Props) => {
             <IconButton
                 name='trash'
                 shape='square'
-                color='red'
-                backgroundColor='#fbb9b8ff'
+                color={Colors.custom.error}
+                backgroundColor={Colors.custom.errorContainer}
                 onPress={props.onRemove}
             />
 
@@ -78,9 +88,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         borderStyle: 'solid',
-        borderWidth: 1,
         borderRadius: 8,
-        backgroundColor: '#fcfdeeff',
+        backgroundColor: Colors.custom.primaryContainer,
         padding: 10
     },
     text: {
@@ -93,7 +102,7 @@ const styles = StyleSheet.create({
     circleButton: {
         flex: 1,
         borderRadius: 15,
-        backgroundColor: '#b1b1b17c',
+        backgroundColor: Colors.custom.disableContainer,
         justifyContent: 'center',
         alignItems: 'center',
     },

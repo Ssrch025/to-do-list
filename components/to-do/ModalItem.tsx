@@ -1,7 +1,18 @@
-import { IListItem } from '@/model/toDoModel'
 import React from 'react'
-import { Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+
+import {
+    Alert,
+    Modal,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
+} from 'react-native'
 import StyledTextInput from './StyledTextInput'
+
+import { IListItem } from '@/model/toDoModel'
+
+import { Colors } from '@/constants/Colors'
 
 type Props = {
     isOpen: boolean
@@ -61,7 +72,7 @@ const styles = StyleSheet.create({
     modalContainer: {
         margin: 20,
         height: '30%',
-        backgroundColor: 'white',
+        backgroundColor: Colors.custom.background,
         borderRadius: 20,
         padding: 35,
         shadowColor: '#000',
@@ -85,7 +96,7 @@ const styles = StyleSheet.create({
         maxWidth: '80%',
     },
     text: {
-        color: 'white',
+        color: Colors.custom.background,
         fontWeight: 'bold',
         textAlign: 'center',
     },

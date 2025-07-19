@@ -1,9 +1,16 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+
+import {
+    ActivityIndicator,
+    StyleSheet,
+    View,
+} from 'react-native';
+
+import { Colors } from '@/constants/Colors';
 
 const ActivityLoading = () => (
     <View style={[styles.container]}>
-        <ActivityIndicator size="large" />
+        <ActivityIndicator color={Colors.custom.primary} size="large" />
     </View>
 );
 

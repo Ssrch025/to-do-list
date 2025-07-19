@@ -1,6 +1,12 @@
-import Ionicons from '@expo/vector-icons/Ionicons';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+
+import Ionicons from '@expo/vector-icons/Ionicons';
+import {
+    StyleSheet,
+    TouchableOpacity,
+} from 'react-native';
+
+import { Colors } from '@/constants/Colors';
 
 type Props = {
     name: React.ComponentProps<typeof Ionicons>['name']
@@ -26,7 +32,7 @@ const IconButton = (props: Props) => {
             <Ionicons
                 name={props.name}
                 size={props.size ?? 20}
-                color={props.color ?? 'green'}
+                color={props.color ?? Colors.custom.text}
             />
         </TouchableOpacity>
     );
@@ -37,7 +43,7 @@ export default IconButton
 const styles = StyleSheet.create({
     button: {
         flex: 1,
-        backgroundColor: '#c0e7ccff',
+        backgroundColor: Colors.custom.secondaryContainer,
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',

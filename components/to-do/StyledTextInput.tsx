@@ -1,5 +1,11 @@
 import React from 'react'
-import { StyleSheet, TextInput } from 'react-native'
+
+import {
+    StyleSheet,
+    TextInput,
+} from 'react-native'
+
+import { Colors } from '@/constants/Colors'
 
 type Props = {
     value: string
@@ -30,6 +36,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         paddingHorizontal: 10,
-        backgroundColor: 'white',
+        backgroundColor: Colors.custom.background,
     },
 })
