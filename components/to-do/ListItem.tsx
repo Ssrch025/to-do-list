@@ -1,35 +1,50 @@
 import { IListItem } from '@/model/toDoModel';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import React, { useState } from 'react';
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import IconButton from './IconButton';
+import ModalItem from './ModalItem';
 
 type Props = {
-    text: string
     listItem: IListItem
     onRemove: () => void
-    onHandleDoneTask: () => void
+    onDoneTask: () => void
+    handleBody: (value: string) => void
 }
 
 const ListItem = (props: Props) => {
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false)
+
+    const onToggle = () => setIsOpenModal(prev => !prev)
+
     return (
         <View style={styles.container}>
             {props.listItem.isDone
                 ? <IconButton
                     name='checkmark-circle-outline'
                     color='green'
-                    onPress={props.onHandleDoneTask}
+                    onPress={props.onDoneTask}
                 />
                 : <TouchableOpacity
                     style={styles.circleButton}
-                    onPress={props.onHandleDoneTask}
+                    onPress={props.onDoneTask}
                 >
                     <View style={styles.circle} />
                 </TouchableOpacity>
             }
 
-            <Text style={[styles.textContainer, props.listItem.isDone && styles.textDone]}>
-                {props.text}
-            </Text>
+            <Pressable
+                style={[styles.textContainer, props.listItem.isDone && { backgroundColor: '#c0e7ccff' }]}
+                onPress={onToggle}
+            >
+                <Text style={[props.listItem.isDone && styles.textDone, styles.text]}>
+                    {props.listItem.header}
+                </Text>
+                {!!props.listItem.body.length &&
+                    <Ionicons size={15} name='pencil' />
+                }
+            </Pressable>
+
 
             <IconButton
                 name='trash'
@@ -37,6 +52,13 @@ const ListItem = (props: Props) => {
                 color='red'
                 backgroundColor='#fbb9b8ff'
                 onPress={props.onRemove}
+            />
+
+            <ModalItem
+                isOpen={isOpenModal}
+                listItem={props.listItem}
+                handleBody={props.handleBody}
+                onToggle={() => setIsOpenModal(prev => !prev)}
             />
         </View>
     );
@@ -53,11 +75,17 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flex: 8,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
         borderStyle: 'solid',
         borderWidth: 1,
         borderRadius: 8,
         backgroundColor: '#fcfdeeff',
         padding: 10
+    },
+    text: {
+        maxWidth: '80%',
+        fontWeight: 'bold',
     },
     textDone: {
         textDecorationLine: 'line-through',

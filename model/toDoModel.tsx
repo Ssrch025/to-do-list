@@ -2,6 +2,7 @@
 
 export interface IListItem {
     id: number
-    text: string
+    header: string
+    body: string
     isDone: boolean
 }
