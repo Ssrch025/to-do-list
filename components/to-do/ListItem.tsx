@@ -1,7 +1,7 @@
-import { IListItem } from '@/model/to-do-model';
+import { IListItem } from '@/model/toDoModel';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import IconButton from './icon-button';
+import IconButton from './IconButton';
 
 type Props = {
     text: string

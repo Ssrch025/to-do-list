@@ -3,8 +3,9 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 type Props = {
-    shape?: 'circle' | 'square'
     name: React.ComponentProps<typeof Ionicons>['name']
+    shape?: 'circle' | 'square'
+    disabled?: boolean
     size?: number
     color?: React.ComponentProps<typeof Ionicons>['color']
     backgroundColor?: string
@@ -19,6 +20,7 @@ const IconButton = (props: Props) => {
                 props.backgroundColor && { backgroundColor: props.backgroundColor },
                 props.shape === 'square' && styles.square,
             ]}
+            disabled={props.disabled}
             onPress={props.onPress}
         >
             <Ionicons
