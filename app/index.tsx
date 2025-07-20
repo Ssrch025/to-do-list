@@ -6,10 +6,10 @@ import {
     FlatList,
     Keyboard,
     KeyboardAvoidingView,
+    Pressable,
     StyleSheet,
     Text,
-    TouchableWithoutFeedback,
-    View,
+    View
 } from 'react-native'
 import {
     SafeAreaProvider,
@@ -109,7 +109,7 @@ const App = () => {
                 behavior='padding'
                 keyboardVerticalOffset={40}
             >
-                <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
                     <SafeAreaView style={styles.container}>
                         <Text style={styles.header}>To-Do List</Text>
 
@@ -149,7 +149,7 @@ const App = () => {
                                 />
                             </View>}
                     </SafeAreaView>
-                </TouchableWithoutFeedback>
+                </Pressable>
             </KeyboardAvoidingView>
         </SafeAreaProvider>
     )
