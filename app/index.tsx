@@ -1,91 +1,157 @@
-import ListItem from '@/components/to-do/list-item'
-import { IListItem } from '@/model/to-do-model'
-import React, { useState } from 'react'
-import { Alert, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+
+import React, { useEffect, useState } from 'react'
+
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+    FlatList,
+    Keyboard,
+    KeyboardAvoidingView,
+    Pressable,
+    StyleSheet,
+    Text,
+    View
+} from 'react-native'
+import {
+    SafeAreaProvider,
+    SafeAreaView,
+} from 'react-native-safe-area-context'
+
+import ActivityLoading from '@/components/to-do/ActivityLoading'
+import IconButton from '@/components/to-do/IconButton'
+import ListItem from '@/components/to-do/ListItem'
+import StyledTextInput from '@/components/to-do/StyledTextInput'
+
+import { Colors } from '@/constants/Colors'
+import { IListItem } from '@/model/toDoModel'
 
 const initialLists: IListItem[] = [
-    {
-        id: 1,
-        text: ''
-    },
-    {
-        id: 2,
-        text: ''
-    },
-    {
-        id: 3,
-        text: ''
-    },
+    { id: Date.now() + 1, header: `Example 1 \n(Tap here to open note)`, body: 'Please type here...', isDone: false },
+    { id: Date.now() + 2, header: 'Example 2', body: '', isDone: false },
+    { id: Date.now() + 3, header: 'Example 3', body: '', isDone: false },
 ]
 
 const App = () => {
-    const maxList = 30
+    const [header, setHeader] = useState<string>('')
     const [lists, setLists] = useState<IListItem[]>(initialLists)
+    const [isLoading, setIsLoading] = useState<boolean>(true)
 
-    const onAdd = () => {
-        const size = lists.length + 1
-        if (size <= maxList) {
-            const newItem: IListItem = { id: size, text: '' }
-            setLists(prev => [newItem, ...prev])
-        } else {
-            Alert.alert(`เพิ่มได้สูงสุด ${maxList} รายการ`)
-        }
+    const onHandleNote = (value: string) => {
+        setHeader(value)
     }
 
-    const onHandleText = (item: IListItem, value: string) => {
-        const findIndex = lists.findIndex((val) => val.id === item.id)
-        lists[findIndex].text = value
-        setLists([...lists])
+    const handleBody = (listItem: IListItem, value: string) => {
+        setLists(prev =>
+            prev.map((item) => item.id === listItem.id
+                ? { ...item, body: value }
+                : item
+            ))
+
+    }
+
+    const onDoneTask = (listItem: IListItem) => {
+        setLists(prev =>
+            prev.map((item) =>
+                item.id === listItem.id ? { ...item, isDone: !item.isDone } : item
+            ))
+    }
+
+    const onSubmit = () => {
+        const newItem: IListItem = { id: Date.now(), header, body: '', isDone: false }
+        setLists(prev => [newItem, ...prev])
+        setHeader('')
     }
 
     const onRemove = (item: IListItem) => {
-        const filterItem = lists.filter((val) => val.id !== item.id)
-        setLists([...filterItem])
+        setLists(prev =>
+            prev.filter((val) =>
+                val.id !== item.id))
     }
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.header}>To-Do List</Text>
-            <View
-                style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between'
-                }}
-            >
-                <TouchableOpacity
-                    style={styles.button}
-                    onPress={onAdd}
-                >
-                    <Text style={styles.buttonText}>
-                        + New
-                    </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[styles.button, { backgroundColor: '#c0e7ccff' }]}
-                    onPress={() => { }}
-                >
-                    <Text style={[styles.buttonText, { color: '#1a7535ff' }]}>
-                        Submit
-                    </Text>
-                </TouchableOpacity>
-            </View>
+    const storeData = async (key: string, value: any) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem(key, jsonValue);
+        } catch (err) {
+            console.error('Error:', err)
+        }
+    }
 
-            <SafeAreaProvider>
-                <SafeAreaView>
-                    <FlatList
-                        data={lists}
-                        renderItem={({ item }) => (
-                            <ListItem
-                                text={item.text}
-                                onHandleText={(value) => onHandleText(item, value)}
-                                onRemove={() => onRemove(item)}
-                            />
-                        )}
-                    />
-                </SafeAreaView>
-            </SafeAreaProvider>
-        </View>
+    const getData = async (key: string) => {
+        try {
+            const jsonValue = await AsyncStorage.getItem(key);
+            if (jsonValue !== null) {
+                const parseValue: IListItem[] = JSON.parse(jsonValue)
+                setLists(parseValue)
+            }
+        } catch (err) {
+            console.error('Error:', err)
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    useEffect(() => {
+        setTimeout(() => {
+            getData('lists')
+        }, 2000)
+    }, [])
+
+    useEffect(() => {
+        if (!isLoading) {
+            storeData('lists', lists)
+        }
+    }, [isLoading, lists])
+
+    return (
+        <SafeAreaProvider>
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior='padding'
+                keyboardVerticalOffset={40}
+            >
+                <Pressable style={{ flex: 1 }} onPress={Keyboard.dismiss}>
+                    <SafeAreaView style={styles.container}>
+                        <Text style={styles.header}>To-Do List</Text>
+
+                        {isLoading
+                            ? <ActivityLoading />
+                            : <FlatList
+                                data={lists}
+                                keyExtractor={(item) => item.id.toString()}
+                                renderItem={({ item }) => (
+                                    <ListItem
+                                        listItem={item}
+                                        onRemove={() => onRemove(item)}
+                                        onDoneTask={() => onDoneTask(item)}
+                                        handleBody={(value) => handleBody(item, value)}
+                                    />
+                                )}
+                            />}
+
+                        {!isLoading &&
+                            <View style={{ flexDirection: 'row', gap: 10, marginBottom: 20, height: 80 }}>
+                                <StyledTextInput
+                                    multiline
+                                    maxLength={100}
+                                    placeholder='Type here...'
+                                    value={header}
+                                    onChange={onHandleNote}
+                                />
+                                <IconButton
+                                    name='add'
+                                    shape='square'
+                                    disabled={!header}
+                                    onPress={onSubmit}
+                                    color={header.length ? Colors.custom.primary : Colors.custom.disable}
+                                    backgroundColor={header.length
+                                        ? Colors.custom.primaryContainer
+                                        : Colors.custom.disableContainer}
+                                />
+                            </View>}
+                    </SafeAreaView>
+                </Pressable>
+            </KeyboardAvoidingView>
+        </SafeAreaProvider>
     )
 }
 
@@ -96,20 +162,12 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 20,
         gap: 10,
+        backgroundColor: 'white',
     },
     header: {
         fontSize: 32,
+        fontWeight: 'bold',
         textAlign: 'center',
+        marginBottom: 10,
     },
-    button: {
-        backgroundColor: '#fbb9b8ff',
-        width: 80,
-        borderRadius: 8,
-        padding: 10,
-        marginHorizontal: 15,
-    },
-    buttonText: {
-        color: '#ef3d3aff',
-        textAlign: 'center',
-    }
 })

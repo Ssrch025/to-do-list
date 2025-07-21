@@ -1,50 +1,33 @@
-# Welcome to your Expo app 👋
+# Welcome to To-Do List app 👋
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Welcome to To-Do List app! This project is a simple and intuitive To-Do List application built with Expo and React Native. It helpyou efficiently manage your daily tasks, allowing you to add new items, mark them as complete, and remove them when no longer neededAll your data is conveniently persisted in local storage, so your tasks are saved even after you close the app.
 
-## Get started
+<div align="center"> 
+   <img src="assets/demo/screenshot.png" width="250px" height="500px"/>
+</div>
 
-1. Install dependencies
+## 💻 Technologies Stack
 
-   ```bash
-   npm install
-   ```
+- Expo
+- React Native
+- CSS
 
-2. Start the app
+## ⚡ Features
 
-   ```bash
-   npx expo start
-   ```
+- Add Items: Add new tasks by creating a topic. If you want to add more detailed content, you can tap on the note section.
+- Mark as Complete: Mark completed tasks.
+- Delete Items: Remove unwanted tasks from the list.
+- Data Storage: Data will be stored in local storage.
 
-In the output, you'll find options to open the app in a
+## 👨‍💻 Installation
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+To install and run the project locally, follow these steps:
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Clone the repository: `git clone https://github.com/Ssrch025/to-do-list.git`
+- Navigate to the project directory: `cd to-do-list`
+- Install the dependencies: `npm install`
+- Start the development server: `npm run start`
 
-## Get a fresh project
+## 📝 License
 
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This project is licensed under the terms of the MIT License.
